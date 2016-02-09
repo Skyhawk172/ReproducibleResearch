@@ -123,7 +123,7 @@ legend(500, 12, legend = c(paste("Mean =", round(meanSteps, 1)),
                           paste("Median =",round(mediSteps, 1))), bty = "n")
 ```
 
-
+Our results show that by filling the NA with the median of the day interval changes the average slightly but does not affect the median significantly.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 ```{r}
@@ -149,7 +149,7 @@ g <- g + scale_x_datetime(date_breaks="2 hour", labels=date_format_tz("%H:%M", t
 print(g)
 ```
 
-
+Breaking the data down into week days and weekends show little difference other than the fact that the number of steps early in the morning (06:00am to 08:00am) is much lower during the weekends than on week days. This suggests that the person that wore the step counting device likes to sleep in on the weekends.
 
 
 

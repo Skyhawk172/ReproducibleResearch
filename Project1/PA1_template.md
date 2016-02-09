@@ -102,7 +102,7 @@ print(meanSteps)
 
 ![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)
 
-
+Our results show that by filling the NA with the median of the day interval changes the average slightly but does not affect the median significantly.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
@@ -131,7 +131,7 @@ print(g)
 
 ![](PA1_template_files/figure-html/unnamed-chunk-11-1.png)
 
-
+Breaking the data down into week days and weekends show little difference other than the fact that the number of steps early in the morning (06:00am to 08:00am) is much lower during the weekends than on week days. This suggests that the person that wore the step counting device likes to sleep in on the weekends.
 
 
 
