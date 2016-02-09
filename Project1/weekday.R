@@ -14,14 +14,12 @@ library(chron)
 
 png("figures/weekday.png", width=680, height=400)
 
-mytable=read.csv("activity.csv")
+rawtable=read.csv("activity.csv")
 
-missing <- filter(mytable, is.na(steps)==TRUE)
-missing$date <- as.Date(missing$date, format="%Y-%m-%d" )
+missing <- filter(rawtable, is.na(steps)==TRUE)
 
 # USE ROWS WITH VALID ENTRIES ONLY (i.e. NO NAs):
-cleantable <- filter(mytable, is.na(steps)==FALSE)
-cleantable$date <- as.Date(cleantable$date, format="%Y-%m-%d" )
+cleantable <- filter(rawtable, is.na(steps)==FALSE)
 
 # Group by intervals
 inter <- group_by(cleantable, interval)
@@ -36,12 +34,12 @@ for(i in 1:nrow(missing)){
 
 # BIND BACK THE WHOLE ARRAY INCLUDING THE ORIGINAL ROWS WITH NAs:
 allvalues <- rbind(cleantable, missing)
-allvalues$date <- as.Date(mytable$date, format="%Y-%m-%d" )
+allvalues$date <- as.Date(allvalues$date, format="%Y-%m-%d" )
 
 # CREATE FACTOR COLUMN FOR WEEK DAYS & WEEKEND DAYS:
 dayofweek   <- is.weekend(allvalues$date) 
 dayofweek.f <- factor(dayofweek, labels=c("Weekday","Weekend"))
-finaltable <- cbind(allvalues, dayofweek.f)
+finaltable  <- cbind(allvalues, dayofweek.f)
 
 finaltable$interval <- strptime(sprintf("%04d", as.numeric(finaltable$interval)), format="%H%M")
 finaltable$interval <- as.POSIXct(finaltable$interval, format="%H:%M:%S")
