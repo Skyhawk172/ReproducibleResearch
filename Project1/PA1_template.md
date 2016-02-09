@@ -12,15 +12,16 @@ library(dplyr)
 library(ggplot2)
 library(chron)
 
-mytable=read.csv("activity.csv")
+rawtable=read.csv("activity.csv")
 
-mytable <- filter(mytable, is.na(steps)==FALSE)
+mytable <- filter(rawtable, is.na(steps)==FALSE)
 mytable$date <- as.Date(mytable$date, format="%Y-%m-%d" )
 ```
  
 ## What is mean total number of steps taken per day?
 
 ```r
+#GROUP DATA BY DATE:
 daily <- group_by(mytable, date)
 totalSteps <- summarise(daily, sumSteps=sum(steps))
 
@@ -63,11 +64,8 @@ The time at which the maximum average number of steps occured on 2016-02-09 08:3
 
 ## Imputing missing values
 
-
-
 ```r
-missing <- filter(mytable, is.na(steps)==TRUE)
-missing$date <- as.Date(missing$date, format="%Y-%m-%d" )
+missing <- filter(rawtable, is.na(steps)==TRUE)
 nrow_missing <- (nrow(missing))
 ```
 There are 2304 rows with values NA in the original dataset.
@@ -76,17 +74,15 @@ Here, we are filling the NA values for a given day interval with the median of t
 
 
 ```r
-# Now, fill in the values of array "missing":
 for(i in 1:nrow(missing)){
   int <- missing$interval[i]
   missing$steps[i] <- meanSteps$meanSteps[meanSteps$interval==int]
-  #cat(sprintf("\"%f\" \"%f\"\n", i, int))
 }
 
 allvalues <- rbind(cleantable, missing)
-allvalues$date <- as.Date(mytable$date, format="%Y-%m-%d" )
+allvalues$date <- as.Date(allvalues$date, format="%Y-%m-%d" )
 
-# group by intervals
+# GROUP BY DATE & CALCULATE DAILY AVERAGE:
 date_groups <- group_by(allvalues, date)
 all <- summarise(date_groups, sumSteps=sum(steps))
 
@@ -100,14 +96,14 @@ print(meanSteps)
 ## [1] 9503.869
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)
+![](PA1_template_files/figure-html/unnamed-chunk-9-1.png)
 
 Our results show that by filling the NA with the median of the day interval changes the average slightly but does not affect the median significantly.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
 ```r
-# CREATE FACTOR COLUMN FOR WEEK DAYS & WEEKEND DAYS:
+# CREATE FACTOR COLUMN FOR WEEKDAYS & WEEKENDS:
 dayofweek   <- is.weekend(allvalues$date) 
 dayofweek.f <- factor(dayofweek, labels=c("Weekday","Weekend"))
 finaltable <- cbind(allvalues, dayofweek.f)
@@ -115,11 +111,11 @@ finaltable <- cbind(allvalues, dayofweek.f)
 finaltable$interval <- strptime(sprintf("%04d", as.numeric(finaltable$interval)), format="%H%M")
 finaltable$interval <- as.POSIXct(finaltable$interval, format="%H:%M:%S")
 
-## GROUP BY INTERVALS AND WEEK DAY/WEEKEND:
+## GROUP BY INTERVALS & WEEKDAY/WEEKEND:
 inter <- group_by(finaltable, interval, dayofweek.f)
 aveSteps <- summarise(inter, meanSteps=mean(steps))
 
-# Plot results and add linear fit:
+# PLOT RESULTS:
 g <- ggplot(aveSteps, aes(interval, meanSteps)) + geom_point() + geom_line()
 g <- g + labs(title = "Average # steps per day interval") 
 g <- g + labs(x = "Day Interval", y = "Average # steps")
@@ -129,7 +125,7 @@ g <- g + scale_x_datetime(date_breaks="2 hour", labels=date_format_tz("%H:%M", t
 print(g)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-11-1.png)
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)
 
 Breaking the data down into week days and weekends show little difference other than the fact that the number of steps early in the morning (06:00am to 08:00am) is much lower during the weekends than on week days. This suggests that the person that wore the step counting device likes to sleep in on the weekends.
 

@@ -9,7 +9,7 @@ library(dplyr)
 library(ggplot2)
 library(scales)
 
-png("timeseries.png", width=880, height=880)
+png("figures/timeseries.png", width=880, height=880)
 
 mytable=read.csv("activity.csv")
 

@@ -5,7 +5,7 @@ library(dplyr)
 library(ggplot2)
 library(scales)
 
-png("missingvalues.png", width=480, height=480)
+png("figures/missingvalues.png", width=480, height=480)
 
 mytable=read.csv("activity.csv")
 
@@ -30,7 +30,7 @@ for(i in 1:nrow(missing)){
 
 
 allvalues <- rbind(cleantable, missing)
-allvalues$date <- as.Date(mytable$date, format="%Y-%m-%d" )
+allvalues$date <- as.Date(allvalues$date, format="%Y-%m-%d" )
 
 # group by intervals
 date_groups <- group_by(allvalues, date)

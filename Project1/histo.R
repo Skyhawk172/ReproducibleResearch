@@ -4,7 +4,7 @@ rm(list = ls())
 library(dplyr)
 library(ggplot2)
 
-png("histo.png", width=480, height=480)
+png("figures/histo.png", width=480, height=480)
 
 mytable=read.csv("activity.csv")
 

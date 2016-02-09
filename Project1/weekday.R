@@ -12,7 +12,7 @@ library(ggplot2)
 library(scales)
 library(chron)
 
-png("weekday.png", width=680, height=400)
+png("figures/weekday.png", width=680, height=400)
 
 mytable=read.csv("activity.csv")
 
