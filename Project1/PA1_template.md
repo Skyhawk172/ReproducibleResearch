@@ -59,7 +59,7 @@ print(g)
 
 ![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)
 
-The time at which the maximum average number of steps occured on 2016-02-09 08:35:00.
+The time at which the maximum average number of steps occured on 2016-02-15 08:35:00.
 
 
 ## Imputing missing values
